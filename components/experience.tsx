@@ -1,6 +1,6 @@
 "use client"
 
-import { Briefcase, GraduationCap, Calendar, MapPin, Download } from "lucide-react"
+import { Briefcase, GraduationCap, Calendar, MapPin, ExternalLink } from "lucide-react"
 import { AnimatedSection } from "@/components/animated-section"
 import { Button } from "@/components/ui/button"
 
@@ -72,9 +72,9 @@ export function Experience() {
               <p className="text-muted-foreground">My professional journey and qualifications</p>
             </div>
             <Button asChild className="bg-accent hover:bg-accent/90 text-accent-foreground gap-2">
-              <a href="/Deepesh_Resume_22317.pdf" download="Deepesh_Resume_22317.pdf">
-                <Download className="h-4 w-4" />
-                Download PDF
+              <a href="https://drive.google.com/file/d/1P5e7T-GU6VX57F0F1Q0EF-CPkTnXkmq_/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+                <ExternalLink className="h-4 w-4" />
+                See Resume
               </a>
             </Button>
           </div>

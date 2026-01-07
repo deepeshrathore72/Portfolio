@@ -13,7 +13,7 @@ const skillCategories = [
   },
   {
     title: "Databases & Tools",
-    skills: ["MongoDB", "MySQL", "PostgreSQL", "Git", "GitHub", "Docker", "Postman", "VS Code"],
+    skills: ["MongoDB", "MySQL", "PostgreSQL", "Redis", "Git", "GitHub", "Docker", "Postman", "VS Code"],
   },
   {
     title: "Core CS",
@@ -37,8 +37,8 @@ export function Skills() {
         {/* Marquee */}
         <AnimatedSection delay={0.1}>
           <div className="relative overflow-hidden py-8 mb-16">
-            <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-background to-transparent z-10" />
-            <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-background to-transparent z-10" />
+            <div className="absolute left-0 top-0 bottom-0 w-20 bg-linear-to-r from-background to-transparent z-10" />
+            <div className="absolute right-0 top-0 bottom-0 w-20 bg-linear-to-l from-background to-transparent z-10" />
             <div className="flex animate-marquee">
               {[...allSkills, ...allSkills].map((skill, index) => (
                 <span

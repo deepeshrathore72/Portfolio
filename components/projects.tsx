@@ -30,7 +30,7 @@ const featuredProjects = [
       "A comprehensive travel platform enabling users to discover, compare, and book hotels and rental properties through an intuitive interface with secure property management.",
     techStack: ["Node.js", "Express.js", "MongoDB", "Bootstrap", "JavaScript"],
     github: "https://github.com/deepeshrathore72/AirBnb-Clone",
-    demo: "#",
+    demo: "https://airbnb-clone-vql5.onrender.com/listings",
     period: "Jul 2024 – Sep 2024",
     image: "/travel-hotel-booking-platform-with-property-listin.png",
     highlights: [
@@ -44,36 +44,40 @@ const featuredProjects = [
 
 const smallPerks = [
   {
-    title: "Trackify",
-    description: "Ticket management system built as a Practicum Project. Led a team of 3...",
-    techStack: ["React", "Node.js"],
+    title: "FitCoach AI",
+    description: "AI-powered fitness assistant generating personalized workout and diet plans with voice guidance and image visualization using Groq AI and ElevenLabs.",
+    techStack: ["Next.js", "MongoDB"],
     stars: 12,
     forks: 3,
-    github: "https://github.com/deepeshrathore72/trackify",
+    github: "https://github.com/deepeshrathore72/Ai-Fitness-App",
+    demo: "https://ai-fitness-app-theta.vercel.app/",
   },
   {
-    title: "API Gateway",
-    description: "Token-based API usage tracking and rate-limiting system using Redis.",
-    techStack: ["Node.js", "Express"],
+    title: "Sales Management",
+    description: "Retail sales management dashboard with real-time analytics, advanced search, multi-select filters, and server-side pagination backed by MongoDB Atlas.",
+    techStack: ["Next.js", "MongoDB"],
     stars: 8,
     forks: 2,
-    github: "https://github.com/deepeshrathore72/api-gateway",
+    github: "https://github.com/deepeshrathore72/sales-management-system",
+    demo: "https://sales-management-system-pi.vercel.app/",
   },
   {
-    title: "Portfolio v1",
-    description: "My first portfolio website built with vanilla HTML, CSS, and JavaScript.",
-    techStack: ["HTML", "CSS"],
+    title: "AI Chat App",
+    description: "Full-stack AI chat application with real-time streaming responses, GitHub OAuth authentication, and persistent storage using PostgreSQL and Groq API.",
+    techStack: ["Next.js", "PostgreSQL"],
     stars: 5,
     forks: 1,
-    github: "https://github.com/deepeshrathore72/portfolio-v1",
+    github: "https://github.com/deepeshrathore72/ai-chat-app",
+    demo: "https://ai-chat-app-vj25.vercel.app/",
   },
   {
-    title: "CLI Tools",
-    description: "Collection of useful command-line utilities for daily development tasks.",
-    techStack: ["Node.js", "Commander"],
+    title: "Polling App",
+    description: "Real-time polling application with live vote updates using WebSocket. Create polls, vote, and see results update instantly with Socket.io integration.",
+    techStack: ["React", "Node.js"],
     stars: 15,
     forks: 4,
-    github: "https://github.com/deepeshrathore72/cli-tools",
+    github: "https://github.com/deepeshrathore72/Assessment-polling-app",
+    demo: "https://assessment-polling-app.vercel.app/",
   },
 ]
 
@@ -220,17 +224,42 @@ export function Projects() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {smallPerks.map((project, index) => (
             <AnimatedSection key={project.title} delay={0.35 + index * 0.08}>
-              <motion.a
-                href={project.github}
-                target="_blank"
-                rel="noopener noreferrer"
+              <motion.div
                 whileHover={{ y: -6, scale: 1.02 }}
                 transition={{ duration: 0.3 }}
-                className="group block p-6 rounded-xl border border-border/50 bg-linear-to-b from-card to-card/50 hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5 transition-all duration-400 h-full"
+                className="group relative p-6 rounded-xl border border-border/50 bg-linear-to-b from-card to-card/50 hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5 transition-all duration-400 h-full flex flex-col"
               >
-                {/* GitHub Icon - Enhanced */}
-                <div className="p-2.5 w-fit rounded-lg bg-muted/50 border border-border/50 group-hover:bg-accent/10 group-hover:border-accent/30 transition-all duration-300 mb-4">
-                  <Github className="h-5 w-5 text-muted-foreground group-hover:text-accent transition-colors duration-300" />
+                {/* Header with Icons */}
+                <div className="flex items-start justify-between mb-4">
+                  {/* <div className="p-2.5 w-fit rounded-lg bg-muted/50 border border-border/50 group-hover:bg-accent/10 group-hover:border-accent/30 transition-all duration-300">
+                    <Github className="h-5 w-5 text-muted-foreground group-hover:text-accent transition-colors duration-300" />
+                  </div> */}
+                  
+                  {/* Action Buttons */}
+                  <div className="flex gap-2">
+                    <motion.a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={(e) => e.stopPropagation()}
+                      className="p-2 rounded-lg border border-border bg-background/80 backdrop-blur-sm hover:bg-muted hover:border-muted-foreground/30 transition-all duration-300"
+                    >
+                      <Github className="h-3.5 w-3.5 text-foreground" />
+                    </motion.a>
+                    <motion.a
+                      href={project.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={(e) => e.stopPropagation()}
+                      className="p-2 rounded-lg bg-accent hover:bg-accent/90 transition-all duration-300 shadow-md shadow-accent/30"
+                    >
+                      <ExternalLink className="h-3.5 w-3.5 text-accent-foreground" />
+                    </motion.a>
+                  </div>
                 </div>
 
                 {/* Title - Enhanced */}
@@ -265,7 +294,7 @@ export function Projects() {
                     </span>
                   </div>
                 </div>
-              </motion.a>
+              </motion.div>
             </AnimatedSection>
           ))}
         </div>

@@ -2,26 +2,127 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import { motion } from "framer-motion"
-import { Send, Mail, Phone, MapPin, Github, Linkedin } from "lucide-react"
+import { Send, Mail, Phone, MapPin, Github, Linkedin, CheckCircle2, XCircle, Copy } from "lucide-react"
+import emailjs from "@emailjs/browser"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { AnimatedSection } from "@/components/animated-section"
+import { toast } from "sonner"
 
 export function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const formRef = useRef<HTMLFormElement>(null)
+
+  // Initialize EmailJS
+  useEffect(() => {
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+    if (publicKey) {
+      emailjs.init(publicKey)
+      console.log("✅ EmailJS initialized with public key")
+    } else {
+      console.error("❌ EmailJS public key not found")
+    }
+  }, [])
+
+  const copyEmailToClipboard = async () => {
+    const email = "deepeshrathore72@gmail.com"
+    try {
+      await navigator.clipboard.writeText(email)
+      toast.success("Email copied to clipboard!", {
+        description: email,
+        icon: <Copy className="h-5 w-5" />,
+      })
+    } catch (err) {
+      toast.error("Failed to copy email", {
+        description: "Please try selecting and copying manually.",
+      })
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsSubmitting(true)
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-    setIsSubmitting(false)
-    setIsSubmitted(true)
+
+    try {
+      // EmailJS configuration
+      const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
+      const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
+      const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+
+      // Detailed logging for debugging
+      console.log("📧 EmailJS Config Check:", {
+        serviceId: serviceId || "MISSING",
+        templateId: templateId || "MISSING",
+        publicKey: publicKey ? "SET" : "MISSING",
+        formRef: formRef.current ? "SET" : "MISSING",
+      })
+
+      if (!serviceId || !templateId || !publicKey) {
+        const missing = []
+        if (!serviceId) missing.push("NEXT_PUBLIC_EMAILJS_SERVICE_ID")
+        if (!templateId) missing.push("NEXT_PUBLIC_EMAILJS_TEMPLATE_ID")
+        if (!publicKey) missing.push("NEXT_PUBLIC_EMAILJS_PUBLIC_KEY")
+
+        throw new Error(`EmailJS configuration is missing: ${missing.join(", ")}`)
+      }
+
+      if (!formRef.current) {
+        throw new Error("Form reference is not available")
+      }
+
+      console.log("📤 Sending email...")
+
+      // Send email using EmailJS (no need to pass publicKey here since we initialized it)
+      const result = await emailjs.sendForm(serviceId, templateId, formRef.current)
+
+      console.log("✅ EmailJS Success:", result)
+
+      setIsSubmitted(true)
+      toast.success("Message sent successfully!", {
+        description: "Thank you for reaching out. I'll get back to you soon.",
+        icon: <CheckCircle2 className="h-5 w-5" />,
+      })
+
+      // Reset form after 5 seconds
+      setTimeout(() => {
+        setIsSubmitted(false)
+        formRef.current?.reset()
+      }, 5000)
+    } catch (error: any) {
+      // Comprehensive error logging
+      console.error("❌ EmailJS Error Details:", {
+        type: typeof error,
+        errorObject: error,
+        message: error?.message,
+        text: error?.text,
+        status: error?.status,
+        name: error?.name,
+        stack: error?.stack,
+      })
+
+      // Determine error message
+      let errorMessage = "Please try again or contact me directly via email."
+
+      if (error?.message) {
+        errorMessage = error.message
+      } else if (error?.text) {
+        errorMessage = error.text
+      } else if (typeof error === "string") {
+        errorMessage = error
+      }
+
+      toast.error("Failed to send message", {
+        description: errorMessage,
+        icon: <XCircle className="h-5 w-5" />,
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -44,17 +145,31 @@ export function Contact() {
           <AnimatedSection delay={0.1}>
             <div className="space-y-8">
               <div className="space-y-6">
-                <a href="mailto:deepeshrathore72@gmail.com" className="flex items-center gap-4 group">
+                <div className="flex items-center gap-4 group">
                   <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center group-hover:bg-accent/20 transition-colors">
                     <Mail className="h-5 w-5 text-accent" />
                   </div>
-                  <div>
+                  <div className="flex-1">
                     <p className="text-sm text-muted-foreground">Email</p>
-                    <p className="text-foreground group-hover:text-accent transition-colors">
-                      deepeshrathore72@gmail.com
-                    </p>
+                    <div className="flex items-center gap-2">
+                      <a
+                        href="mailto:deepeshrathore72@gmail.com"
+                        className="text-foreground hover:text-accent transition-colors"
+                      >
+                        deepeshrathore72@gmail.com
+                      </a>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={copyEmailToClipboard}
+                        className="h-8 w-8 hover:bg-accent/10"
+                        title="Copy email"
+                      >
+                        <Copy className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
-                </a>
+                </div>
 
                 <a href="tel:+917724931408" className="flex items-center gap-4 group">
                   <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center group-hover:bg-accent/20 transition-colors">
@@ -119,25 +234,33 @@ export function Contact() {
                   <p className="text-muted-foreground">{"Thank you for reaching out. I'll get back to you soon."}</p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="name">Name</Label>
-                      <Input id="name" placeholder="Your name" required className="bg-background" />
+                      <Input id="name" name="from_name" placeholder="Your name" required className="bg-background" />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="email">Email</Label>
-                      <Input id="email" type="email" placeholder="your@email.com" required className="bg-background" />
+                      <Input
+                        id="email"
+                        name="from_email"
+                        type="email"
+                        placeholder="your@email.com"
+                        required
+                        className="bg-background"
+                      />
                     </div>
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="subject">Subject</Label>
-                    <Input id="subject" placeholder="What's this about?" required className="bg-background" />
+                    <Input id="subject" name="subject" placeholder="What's this about?" required className="bg-background" />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="message">Message</Label>
                     <Textarea
                       id="message"
+                      name="message"
                       placeholder="Tell me about your project or opportunity..."
                       rows={5}
                       required
