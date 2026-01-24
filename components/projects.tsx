@@ -29,8 +29,8 @@ const featuredProjects = [
     description:
       "A comprehensive travel platform enabling users to discover, compare, and book hotels and rental properties through an intuitive interface with secure property management.",
     techStack: ["Node.js", "Express.js", "MongoDB", "Bootstrap", "JavaScript"],
-    github: "https://github.com/deepeshrathore72/AirBnb-Clone",
-    demo: "https://airbnb-clone-vql5.onrender.com/listings",
+    github: "https://github.com/deepeshrathore72/Wanderlust---A-Travel-Assist-Website",
+    demo: "https://wanderlust-a-travel-assist-website.onrender.com",
     period: "Jul 2024 – Sep 2024",
     image: "/travel-hotel-booking-platform-with-property-listin.png",
     highlights: [
