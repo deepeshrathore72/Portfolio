@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { ArrowRight, Github, Linkedin, Mail } from "lucide-react"
+import { ArrowRight, Github, Linkedin, FolderCode } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export function Hero() {
@@ -66,11 +66,13 @@ export function Hero() {
               <span className="sr-only">LinkedIn</span>
             </a>
             <a
-              href="mailto:deepeshrathore72@gmail.com"
+              href="https://codolio.com/profile/deepeshrathore72"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-muted-foreground hover:text-foreground transition-colors"
             >
-              <Mail className="h-5 w-5" />
-              <span className="sr-only">Email</span>
+              <FolderCode className="h-5 w-5" />
+              <span className="sr-only">Codolio</span>
             </a>
           </div>
         </motion.div>
